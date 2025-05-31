@@ -85,7 +85,7 @@ python video_style_transfer.py --inv_path ./output/content/libby/inversion\
 Then, you will find the edit result in the `./output/edit`.
 
 
-## 🎓 Citation
+## 🎓 Bibtex
 If you find this code helpful for your research, please cite:
 ```
 @article{song2024univst,
