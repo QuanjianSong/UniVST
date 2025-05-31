@@ -39,9 +39,9 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
 
 ## 🔥🔥🔥 News
 <pre>
-• <strong>2024.10.26</strong>: 🔥 The paper of UniVST has been submitted to <a href="https://arxiv.org/abs/2410.20084">arXiv</a>.
+• <strong>2024.10.26</strong>: 🔥 The paper of UniVST has been submitted to <a href="https://arxiv.org/abs/2410.20084" target="_blank">arXiv</a>.
 • <strong>2025.01.01</strong>: 🔥 The official code of UniVST has been released.
-• <strong>2025.05.31</strong>: 🔥 The <a href="https://quanjiansong.github.io/projects/UniVST">project homepage</a> of UniVST will be improved as soon as possible.
+• <strong>2025.05.31</strong>: 🔥 The <a href="https://quanjiansong.github.io/projects/UniVST" target="_blank">project homepage</a> of UniVST will be improved as soon as possible.
 </pre>
 
 ## 🎬 Overview
