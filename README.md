@@ -21,7 +21,6 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
 
 <p align="center">
     <a href="https://arxiv.org/abs/2410.20084" target="_blank"> <img src='https://img.shields.io/badge/arXiv-2410.20084%20UniVST-red' alt='Paper PDF'></a>
-    
     <a href='https://quanjiansong.github.io/projects/UniVST'><img src='https://img.shields.io/badge/Project_Page-UniVST-green' alt='Project Page'></a>
 </p>
 </div>
