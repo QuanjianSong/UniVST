@@ -91,9 +91,9 @@ Then, you will find the style inversion result in the `./output/style`.
 
 #### ► 4.Perform localized video style transfer
 ```
-python video_style_transfer.py --inv_path ./output/content/libby/inversion\
-                            --mask_path ./output/mask/libby\
-                            --style_path ./output/style/style1/inversion\ 
+python video_style_transfer.py --inv_path ./output/content/libby/inversion \
+                            --mask_path ./output/mask/libby \
+                            --style_path ./output/style/style1/inversion \ 
                             --output_dir ./output
 ```
 Then, you will find the edit result in the `./output/edit`.
