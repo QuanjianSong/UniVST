@@ -8,13 +8,14 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
     <a href='https://scholar.google.com/citations?user=Dp3L1bsAAAAJ&hl=zh-CN&oi=ao' target='_blank' style='text-decoration:none'>Mingbao Lin<sup>2</sup></a>, &ensp;
     <a href='https://scholar.google.com/citations?hl=zh-CN&user=nnF1s7kAAAAJ' target='_blank' style='text-decoration:none'>Wengyi Zhan<sup>1</sup></a>, &ensp;
     <a href='https://scholar.google.com/citations?user=DNuiPHwAAAAJ&hl=zh-CN&oi=ao' target='_blank' style='text-decoration:none'>Shuicheng Yan<sup>2</sup></a>, &ensp;
-    <a href='https://mac.xmu.edu.cn/ljcao/' target='_blank' style='text-decoration:none'>Liujuan Cao<sup>1</sup></a>, &ensp;
+    <a href='https://mac.xmu.edu.cn/ljcao/' target='_blank' style='text-decoration:none'>Liujuan Cao<sup>1,†</sup></a>, &ensp;
     <a href='https://mac.xmu.edu.cn/rrji/' target='_blank' style='text-decoration:none'>Rongrong Ji<sup>1</sup></a>
 </div>
 
 <div>
     <sup>1</sup> Key Laboratory of Multimedia Trusted Perception and Efficient Computing, <br> Ministry of Education of China, Xiamen University, China.<br>
-    <sup>2</sup> Kunlun Skywork AI.
+    <sup>2</sup> Kunlun Skywork AI. &ensp;
+    <sup>†</sup> Corresponding Author.
 </div>
 
 <sub></sub>
