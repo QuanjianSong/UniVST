@@ -101,7 +101,7 @@ Then, you will find the edit result in the `./output/edit`.
 
 
 ## 🎓 Bibtex
-If you find this code helpful for your research, please cite:
+🤗 If you find this code helpful for your research, please cite:
 ```
 @article{song2024univst,
   title={UniVST: A Unified Framework for Training-free Localized Video Style Transfer},
