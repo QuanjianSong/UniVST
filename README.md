@@ -56,7 +56,7 @@ git clone https://github.com/QuanjianSong/UniVST.git
 conda create -n UniVST python=3.9
 conda activate UniVST
 pip install -r requirements.txt
-# Installation with environment.yaml
+# Or installation with environment.yaml
 conda env create -f environment.yaml
 ```
 
