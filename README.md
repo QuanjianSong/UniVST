@@ -47,7 +47,7 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
 
 ## 🎬 Overview
 We propose UniVST, a unified framework for training-free localized video style transfer based on diffusion models. UniVST first applies DDIM inversion to the original video and style image to obtain their initial noise and integrates Point-Matching Mask Propagation to generate masks for the object regions. It then performs AdaIN-Guided Localized Video Stylization with a threebranch architecture for information interaction. Moreover, SlidingWindow Consistent Smoothing is incorporated into the denoising process, enhancing the temporal consistency in the latent space. The overall framework is illustrated as follows:
-![Overall Framework](imgs/overall_framework.png)
+![Overall Framework](assets/overall_framework.png)
 
 ## 🔧 Environment
 ```
@@ -63,20 +63,20 @@ conda env create -f environment.yaml
 ## 🚀 Start
 #### • 1.Perform inversion for original video.
 ```
-python content_ddim_inv.py --content_path ./example/content/libby \
+python content_ddim_inv.py --content_path ./examples/content/libby \
                             --output_dir ./output
 ```
 Then, you will find the content inversion result in the `./output/content`.
 #### • 2.Perform mask propagation.
 ```
 python mask_propagation.py --feature_path ./output/features/libby/inversion_feature_301.pt \
-                            --mask_path ./example/mask/libby.png \
+                            --mask_path ./examples/mask/libby.png \
                             --output_dir ./output
 ```
 Then, you will find the mask propagation result in the `./output/mask`.
 #### • 3.Perform inversion for style image.
 ```
-python style_ddim_inv.py --style_path ./example/style/style1.png \
+python style_ddim_inv.py --style_path ./examples/style/style1.png \
                             --output_dir ./output
 ```
 Then, you will find the style inversion result in the `./output/style`.
