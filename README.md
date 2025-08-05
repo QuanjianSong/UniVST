@@ -32,7 +32,7 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
         <img src='https://img.shields.io/badge/Project_Page-UniVST-green' alt='Project Page'></a>  &emsp;  &emsp;
     </span>
     <span> 
-        <a href='https://huggingface.co/papers/2503.06508' target="_blank"> 
+        <a href='https://huggingface.co/papers/2410.20084' target="_blank"> 
         <img src='https://img.shields.io/badge/Hugging_Face-UniVST-yellow' alt='Project Page'></a> &emsp;  &emsp;
     </span>
 </p>
@@ -42,22 +42,18 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
 - **2024.10.26**: 🔥 The paper of UniVST has been submitted to [arXiv](https://arxiv.org/abs/2410.20084).
 - **2025.01.01**: 🔥 The official code of UniVST has been released.
 
-## 0. Project Introduction
+## 🎬 Overview
 ![Overall Framework](imgs/overall_framework.png)
 This is the official implementation of "UniVST: A Unified Framework for Training-free Localized Video Style Transfer". It operates without the need for training, offering a distinct advantage over existing methods that transfer style across entire videos. 
 
-## 1. Environment Configuration
+## 🔧 Environment Configuration
 ```
 git clone https://github.com/QuanjianSong/UniVST.git
-```
-#### 1.1 Installation with the requirement.txt
-```
+# Installation with the requirement.txt
 conda create -n UniVST python=3.9
 conda activate UniVST
 pip install -r requirements.txt
-```
-#### 1.2 Installation with environment.yaml
-```
+# Installation with environment.yaml
 conda env create -f environment.yaml
 ```
 
@@ -92,8 +88,8 @@ Then, you will find the edit result in the `./output/edit`.
 
 
 
-## Citation
-If you find this code helpful for your research, please cite:
+## 🎓 Bibtex
+🤗 If you find this code helpful for your research, please cite:
 ```
 @article{song2024univst,
   title={UniVST: A Unified Framework for Training-free Localized Video Style Transfer},
