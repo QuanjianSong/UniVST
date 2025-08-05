@@ -43,8 +43,8 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
 - **2025.01.01**: 🔥 The official code of UniVST has been released.
 
 ## 🎬 Overview
+We propose UniVST, a unified framework for training-free localized video style transfer based on diffusion models. UniVST first applies DDIM inversion to the original video and style image to obtain their initial noise and integrates Point-Matching Mask Propagation to generate masks for the object regions. It then performs AdaIN-Guided Localized Video Stylization with a threebranch architecture for information interaction. Moreover, SlidingWindow Consistent Smoothing is incorporated into the denoising process, enhancing the temporal consistency in the latent space. The overall framework is illustrated as follows:
 ![Overall Framework](imgs/overall_framework.png)
-This is the official implementation of "UniVST: A Unified Framework for Training-free Localized Video Style Transfer". It operates without the need for training, offering a distinct advantage over existing methods that transfer style across entire videos. 
 
 ## 🔧 Environment Configuration
 ```
@@ -57,27 +57,27 @@ pip install -r requirements.txt
 conda env create -f environment.yaml
 ```
 
-## 2. Quick Start
-#### 2.1 Perform inversion for original video.
+## ⚙️ Quick Start
+#### • 1.Perform inversion for original video.
 ```
 python content_ddim_inv.py --content_path ./example/content/libby \
                             --output_dir ./output
 ```
 Then, you will find the content inversion result in the `./output/content`.
-#### 2.2 Perform mask propagation.
+#### • 2.Perform mask propagation.
 ```
 python mask_propagation.py --feature_path ./output/features/libby/inversion_feature_301.pt \
                             --mask_path ./example/mask/libby.png \
                             --output_dir ./output
 ```
 Then, you will find the mask propagation result in the `./output/mask`.
-#### 2.3 Perform inversion for style image.
+#### • 3.Perform inversion for style image.
 ```
 python style_ddim_inv.py --style_path ./example/style/style1.png \
                             --output_dir ./output
 ```
 Then, you will find the style inversion result in the `./output/style`.
-#### 2.4 Perform video style transfer.
+#### • 4.Perform video style transfer.
 ```
 python video_style_transfer.py --inv_path ./output/content/libby/inversion\
                             --mask_path ./output/mask/libby\
