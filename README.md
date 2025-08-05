@@ -33,23 +33,23 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
     </span>
     <span> 
         <a href='https://huggingface.co/papers/2410.20084' target="_blank"> 
-        <img src='https://img.shields.io/badge/Hugging_Face-UniVST-yellow' alt='Project Page'></a> &emsp;  &emsp;
+        <img src='https://img.shields.io/badge/Hugging_Face-UniVST-yellow' alt='Hugging Face'></a> &emsp;  &emsp;
     </span>
 </p>
 </div>
 
 ## 🎉 News
-</pre>
-• <strong>2025.05</strong>: 🔥 The official code of UniVST has been released.
+<pre>
+• <strong>2025.05</strong>: 🔥 The <a href="https://quanjiansong.github.io/projects/UniVST">project page</a> of UniVST is now available.
 • <strong>2025.01</strong>: 🔥 The official code of UniVST has been released.
-• <strong>2024.10</strong>: 🔥 The paper of UniVST has been submitted to [arXiv](https://arxiv.org/abs/2410.20084).
+• <strong>2024.10</strong>: 🔥 The paper of UniVST has been submitted to <a href="https://arxiv.org/abs/2410.20084">arXiv</a>.
 </pre>
 
 ## 🎬 Overview
 We propose UniVST, a unified framework for training-free localized video style transfer based on diffusion models. UniVST first applies DDIM inversion to the original video and style image to obtain their initial noise and integrates Point-Matching Mask Propagation to generate masks for the object regions. It then performs AdaIN-Guided Localized Video Stylization with a threebranch architecture for information interaction. Moreover, SlidingWindow Consistent Smoothing is incorporated into the denoising process, enhancing the temporal consistency in the latent space. The overall framework is illustrated as follows:
 ![Overall Framework](imgs/overall_framework.png)
 
-## 🔧 Environment Configuration
+## 🔧 Environment
 ```
 git clone https://github.com/QuanjianSong/UniVST.git
 # Installation with the requirement.txt
@@ -60,7 +60,7 @@ pip install -r requirements.txt
 conda env create -f environment.yaml
 ```
 
-## ⚙️ Quick Start
+## 🚀 Start
 #### • 1.Perform inversion for original video.
 ```
 python content_ddim_inv.py --content_path ./example/content/libby \
