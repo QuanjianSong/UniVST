@@ -39,8 +39,11 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
 </div>
 
 ## 🎉 News
-- **2024.10.26**: 🔥 The paper of UniVST has been submitted to [arXiv](https://arxiv.org/abs/2410.20084).
-- **2025.01.01**: 🔥 The official code of UniVST has been released.
+</pre>
+• <strong>2025.05</strong>: 🔥 The official code of UniVST has been released.
+• <strong>2025.01</strong>: 🔥 The official code of UniVST has been released.
+• <strong>2024.10</strong>: 🔥 The paper of UniVST has been submitted to [arXiv](https://arxiv.org/abs/2410.20084).
+</pre>
 
 ## 🎬 Overview
 We propose UniVST, a unified framework for training-free localized video style transfer based on diffusion models. UniVST first applies DDIM inversion to the original video and style image to obtain their initial noise and integrates Point-Matching Mask Propagation to generate masks for the object regions. It then performs AdaIN-Guided Localized Video Stylization with a threebranch architecture for information interaction. Moreover, SlidingWindow Consistent Smoothing is incorporated into the denoising process, enhancing the temporal consistency in the latent space. The overall framework is illustrated as follows:
