@@ -1,0 +1,19 @@
+accelerate==1.6.0
+bitsandbytes==0.47.0
+decord==0.6.0
+diffusers==0.35.1
+einops==0.8.1
+huggingface_hub==0.35.1
+imageio==2.37.0
+matplotlib==3.10.6
+numpy==1.26.2
+omegaconf==2.3.0
+opencv_python==3.4.18.65
+packaging==25.0
+Pillow==11.3.0
+Requests==2.32.5
+safetensors==0.6.2
+torch==2.5.1 --extra-index-url https://download.pytorch.org/whl/cu121
+tqdm==4.67.1
+transformers==4.48.1
+xformers==0.0.32.post2
