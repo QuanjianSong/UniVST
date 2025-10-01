@@ -335,7 +335,7 @@ class AnimationPipeline(DiffusionPipeline):
         return latents
 
     @torch.no_grad()
-    def __call__(
+    def reconstruction(
         self,
         prompt: Union[str, List[str]],
         video_length: Optional[int],
@@ -388,7 +388,7 @@ class AnimationPipeline(DiffusionPipeline):
         timesteps = self.scheduler.timesteps
 
         # Prepare latent variables
-        num_channels_latents = self.unet.in_channels
+        num_channels_latents = self.unet.config.in_channels
         latents = self.prepare_latents(
             batch_size * num_videos_per_prompt,
             num_channels_latents,
@@ -449,11 +449,7 @@ class AnimationPipeline(DiffusionPipeline):
     def video_style_transfer(
         self,
         prompt: Union[str, List[str]],
-        video_length: Optional[int],
-        height: Optional[int] = None,
-        width: Optional[int] = None,
         num_inference_steps: int = 50,
-        guidance_scale: float = 7.5,
         negative_prompt: Optional[Union[str, List[str]]] = None,
         num_videos_per_prompt: Optional[int] = 1,
         eta: float = 0.0,
@@ -464,136 +460,73 @@ class AnimationPipeline(DiffusionPipeline):
         callback: Optional[Callable[[int, int, torch.FloatTensor], None]] = None,
         callback_steps: Optional[int] = 1,
         #
-        inv_path=None,
-        style_path=None,
+        content_inv_path=None,
+        style_inv_path=None,
         mask_path=None,
         #
         **kwargs,
     ):
-        # Default height and width to unet
-        height = height or self.unet.config.sample_size * self.vae_scale_factor
-        width = width or self.unet.config.sample_size * self.vae_scale_factor
-
-        # Check inputs. Raise error if not correct
-        self.check_inputs(prompt, height, width, callback_steps)
-
-        # Define call parameters
-        # batch_size = 1 if isinstance(prompt, str) else len(prompt)
-        batch_size = 1
-        if latents is not None:
-            batch_size = latents.shape[0]
-        if isinstance(prompt, list):
-            batch_size = len(prompt)
-
         device = self._execution_device
         # here `guidance_scale` is defined analog to the guidance weight `w` of equation (2)
         # of the Imagen paper: https://arxiv.org/pdf/2205.11487.pdf . `guidance_scale = 1`
         # corresponds to doing no classifier free guidance.
-        do_classifier_free_guidance = guidance_scale > 1.0
 
-        # Encode input prompt
-        prompt = prompt if isinstance(prompt, list) else [prompt] * batch_size
-        
-        if negative_prompt is not None:
-            negative_prompt = negative_prompt if isinstance(negative_prompt, list) else [negative_prompt] * batch_size 
-        
-        # modified
-        if do_classifier_free_guidance:
-            negative_prompt_embeds, prompt_embeds = self._encode_prompt(
-                prompt, device, num_videos_per_prompt, do_classifier_free_guidance, negative_prompt
-            )
-        else:
-            prompt_embeds = self._encode_prompt(
-                prompt, device, num_videos_per_prompt, do_classifier_free_guidance, negative_prompt
-            )
+
+        prompt_embeds = self._encode_prompt(
+            prompt, device, num_videos_per_prompt, False, negative_prompt
+        )
         
         # 3.1 Encode ddim inversion prompt
-        if do_classifier_free_guidance:
-            _, ddim_inv_prompt_embeds = self._encode_prompt(
-                "",
-                device,
-                num_videos_per_prompt,
-                do_classifier_free_guidance,
-                negative_prompt=None,
-            )
-        else:
-            ddim_inv_prompt_embeds = self._encode_prompt(
-                "",
-                device,
-                num_videos_per_prompt,
-                do_classifier_free_guidance,
-                negative_prompt=None,
-            )
+        ddim_inv_prompt_embeds = self._encode_prompt(
+            "",
+            device,
+            num_videos_per_prompt,
+            False,
+            negative_prompt=None,
+        )
         #
-        if do_classifier_free_guidance:
-            # prompt_embeds_all = torch.cat([negative_prompt_embeds.unsqueeze(0), prompt_embeds.unsqueeze(0)])
-            prompt_embeds_all = torch.cat([ddim_inv_prompt_embeds.unsqueeze(0), ddim_inv_prompt_embeds.unsqueeze(0), negative_prompt_embeds.unsqueeze(0), prompt_embeds.unsqueeze(0)])
-        else:
-            prompt_embeds_all = torch.cat([ddim_inv_prompt_embeds, ddim_inv_prompt_embeds, prompt_embeds])
+        prompt_embeds_all = torch.cat([ddim_inv_prompt_embeds, ddim_inv_prompt_embeds, prompt_embeds])
 
         # Prepare timesteps
         self.scheduler.set_timesteps(num_inference_steps, device=device)
         timesteps = self.scheduler.timesteps
 
-        # Prepare latent variables
-        num_channels_latents = self.unet.in_channels
-        latents = self.prepare_latents(
-            batch_size * num_videos_per_prompt,
-            num_channels_latents,
-            video_length,
-            height,
-            width,
-            prompt_embeds_all.dtype,
-            device,
-            generator,
-            latents,
-        )
         latents_dtype = latents.dtype
 
         # Prepare extra step kwargs.
         extra_step_kwargs = self.prepare_extra_step_kwargs(generator, eta)
         # Denoising loop
         num_warmup_steps = len(timesteps) - num_inference_steps * self.scheduler.order
-        
-        # breakpoint()
+
         
         with self.progress_bar(total=num_inference_steps) as progress_bar:
             for i, t in enumerate(timesteps):
                 # ---------------------------------add code------------------------------------
-                ddim_inv_latents_at_t = load_ddim_latents_at_t(t, inv_path).to(latents.dtype).to(self.device)
-                style_inv_latents_at_t = load_ddim_latents_at_t(t, style_path).to(latents.dtype).to(self.device)
-
-                if i <= 0.9 * num_inference_steps:
+                content_inv_latents_at_t = load_ddim_latents_at_t(50 - i, content_inv_path).to(latents.dtype).to(self.device)
+                style_inv_latents_at_t = load_ddim_latents_at_t(50 - i, style_inv_path).to(latents.dtype).to(self.device)
+                # localized latent blending
+                if mask_path and i <= 0.9 * num_inference_steps:
                     mask = load_mask(mask_path)
-                    # resized_mask shape: [1, 4, 16, 64, 64]
                     resized_mask = F.interpolate(mask.to(latents.device).to(latents.dtype), size=(latents.shape[-2], latents.shape[-1]), 
                                                     mode='bilinear', align_corners=False)
                     resized_mask = resized_mask[None, :]
-                    ori_latents = load_ddim_latents_at_t(
-                    t, ddim_latents_path=inv_path
-                    ).to(latents.dtype).to(self.device)
-                    latents = (1 - resized_mask) * latents + resized_mask * ori_latents 
+                    latents = (1 - resized_mask) * latents + resized_mask * content_inv_latents_at_t 
                 # ------------------------------------------------------------------------------------------------------------------
                 if i >= 0.8 * num_inference_steps and i <= 0.9 * num_inference_steps:
-                # if i > 0.8 * num_inference_steps:    
-                # if True:
-                # if False:
-                    mask = load_mask(mask_path)
-                    # resized_mask shape: [1, 4, 16, 64, 64]
-                    resized_mask = F.interpolate(mask.to(latents.device).to(latents.dtype), size=(latents.shape[-2], latents.shape[-1]), 
-                                                    mode='bilinear', align_corners=False)
-                    resized_mask = resized_mask[None, :]
-                    latents = (1 - resized_mask) * latent_adain(latents, style_inv_latents_at_t) + resized_mask * ori_latents 
+                    if mask_path:
+                        mask = load_mask(mask_path)
+                        resized_mask = F.interpolate(mask.to(latents.device).to(latents.dtype), size=(latents.shape[-2], latents.shape[-1]), 
+                                                        mode='bilinear', align_corners=False)
+                        resized_mask = resized_mask[None, :]
+                    else:
+                        resized_mask = 0.0
+                    latents = (1.0 - resized_mask) * latent_adain(latents, style_inv_latents_at_t) + resized_mask * content_inv_latents_at_t 
 
-                # expand the latents if we are doing classifier free guidance
-                if do_classifier_free_guidance:
-                    latent_model_input = torch.cat([ddim_inv_latents_at_t, style_inv_latents_at_t, latents, latents])
-                else:
-                    latent_model_input = torch.cat([ddim_inv_latents_at_t, style_inv_latents_at_t, latents])
+
+                latent_model_input = torch.cat([content_inv_latents_at_t, style_inv_latents_at_t, latents])
                 latent_model_input = self.scheduler.scale_model_input(latent_model_input, t)
                 # register time
                 register_time(self, i)
-                # register_time(self, t)
 
                 # predict the noise residual
                 noise_pred = self.unet(
@@ -601,17 +534,11 @@ class AnimationPipeline(DiffusionPipeline):
                     encoder_hidden_states=prompt_embeds_all,
                 ).sample.to(dtype=latents_dtype)
 
-                # perform guidance
-                if do_classifier_free_guidance:
-                    _noise_pred_ddim_inv, _noise_pred_style_inv, noise_pred_negative, noise_pred_editing  = noise_pred.chunk(4)
-                    noise_pred = noise_pred_negative + guidance_scale * (noise_pred_editing - noise_pred_negative)
-                else:
-                    _noise_pred_ddim_inv, _noise_pred_style_inv, noise_pred_editing = noise_pred.chunk(3)
-                    noise_pred = noise_pred_editing
+                _noise_pred_content_inv, _noise_pred_style_inv, noise_pred = noise_pred.chunk(3)
                 # -------------------------------Sliding window smoothing--------------------------
                 # smoother = 'pixel'
                 smoother = None
-                if i >= 20 and i < 25 and smoother is not None:
+                if smoother is not None and i >= 20 and i < 25:
                     # cal Z_0
                     pred_original_sample = self.scheduler.step(noise_pred, t, latents, **extra_step_kwargs).pred_original_sample
                     if smoother == 'pixel':

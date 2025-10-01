@@ -134,10 +134,10 @@ def load_mask(mask_path='', n_frames=16):
     # image_files = [os.path.join(mask_path, file) for file in os.listdir(mask_path) if file.lower().endswith(('.jpg', '.jpeg', '.png'))]
     image_files = [f"{mask_path}/%05d.png" % (i * 1) for i in range(n_frames)]
     image_files = sorted(image_files)
-    # breakpoint()
+
     images = [np.array(Image.open(image)) * 255 for image in image_files]
     # images = [np.array(Image.open(image)) for image in image_files]
-    # breakpoint()
+
     image_tensor = np.stack(images)
     image_tensor_torch = torch.from_numpy(image_tensor).unsqueeze(0)
     image_tensor_torch = image_tensor_torch.clip(0, 1)

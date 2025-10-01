@@ -300,7 +300,7 @@ class SpatioTemporalTransformerBlock(nn.Module):
             kwargs.update(clip_length=clip_length)
         if 'SparseCausalAttention_index' in self.model_config.keys():
             kwargs.update(SparseCausalAttention_index = self.model_config['SparseCausalAttention_index'])
-        # breakpoint()
+
         hidden_states = hidden_states + self.attn1(**kwargs)
 
         if clip_length is not None and self.temporal_attention_position == "after_spatial":
@@ -388,7 +388,7 @@ class SparseCausalAttention(CrossAttention):
             frame_index_list = []
             if len(SparseCausalAttention_index) > 0:
                 # ----------------------------------------------------------------
-                # breakpoint()
+
                 for index in SparseCausalAttention_index:
                     if isinstance(index, str):
                         if index == 'first':

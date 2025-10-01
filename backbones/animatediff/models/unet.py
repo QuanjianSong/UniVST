@@ -328,7 +328,8 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin):
         class_labels: Optional[torch.Tensor] = None,
         attention_mask: Optional[torch.Tensor] = None,
         #
-        up_ft_indices: str = None,
+        ft_indices: str = None,
+        ft_timesteps: int = None,
         ft_path: str = None,
     ) -> Union[UNet3DConditionOutput, Tuple]:
         r"""
@@ -447,10 +448,15 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin):
                 sample = upsample_block(
                     hidden_states=sample, temb=emb, res_hidden_states_tuple=res_samples, upsample_size=upsample_size, encoder_hidden_states=encoder_hidden_states,
                 )
-            if up_ft_indices is not None and ft_path is not None:
+            
+            # -----------------------------------additional-----------------------------------
+            if ft_indices is not None and ft_timesteps is not None and ft_path is not None:
                 # save feature map
-                if timestep == 301 and i in up_ft_indices:
-                    torch.save(sample.detach(), os.path.join(ft_path, f'inversion_feature_map_{timestep}_step.pt'))
+                if i in ft_indices and timestep in ft_timesteps:
+                    save_path = os.path.join(ft_path, f'inversion_feature_map_{i}_block_{timestep}_step.pt')
+                    torch.save(sample[0].permute(1, 2, 3, 0).contiguous().detach(),
+                            save_path)
+                    print(f'save feature map at: {save_path}')
 
         # post-process
         sample = self.conv_norm_out(sample)
@@ -489,7 +495,7 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin):
         model_file = os.path.join(pretrained_model_path, WEIGHTS_NAME)
         if not os.path.isfile(model_file):
             raise RuntimeError(f"{model_file} does not exist")
-        state_dict = torch.load(model_file, map_location="cpu")
+        state_dict = torch.load(model_file, map_location="cpu", weights_only=False)
 
         m, u = model.load_state_dict(state_dict, strict=False)
         print(f"### missing keys: {len(m)}; \n### unexpected keys: {len(u)};")

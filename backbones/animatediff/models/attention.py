@@ -23,7 +23,7 @@ class SparseCausalAttention2D(CrossAttention):
                 SparseCausalAttention_index: list = [-1, 0, 'first'],
                 **cross_attention_kwargs):
         input_ndim = hidden_states.ndim
-        # breakpoint()
+
         if self.group_norm is not None:
             hidden_states = self.group_norm(hidden_states.transpose(1, 2)).transpose(1, 2)
         if input_ndim == 4:
@@ -39,14 +39,14 @@ class SparseCausalAttention2D(CrossAttention):
         head_dim = dim // self.heads
         key = self.to_k(hidden_states)
         value = self.to_v(hidden_states)
-        # breakpoint()
+
         # query、key、value shape: [64, h*w, C]
-        # breakpoint()
+
         if video_length is not None:
             key = rearrange(key, "(b f) d c -> b f d c", f=video_length)
             value = rearrange(value, "(b f) d c -> b f d c", f=video_length)
             #  *********************** Start of Spatial-temporal attention **********
-            # breakpoint()
+
             frame_index_list = []
             if len(SparseCausalAttention_index) > 0:
                 # ----------------------------------------------------------------
@@ -237,7 +237,7 @@ class BasicTransformerBlock(nn.Module):
 
         # SC-Attn
         assert unet_use_cross_frame_attention is not None
-        # breakpoint()
+
         if unet_use_cross_frame_attention:
             self.attn1 = SparseCausalAttention2D(
                 query_dim=dim,

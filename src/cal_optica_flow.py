@@ -2,7 +2,6 @@ import torch
 import cv2
 import numpy as np
 from torchvision.models.optical_flow import raft_large, Raft_Large_Weights
-import matplotlib.pyplot as plt
 
 
 def load_image(image_path):
@@ -62,7 +61,7 @@ def get_warp(image1_path, image2_path, ref_image1=None, ref_image2=None, occlusi
         image2 = load_image(image2_path)
     else:
         image2 = image2_path
-    # breakpoint()
+
     if ref_image2 is None:
         ref_image2 = image2.copy()
     elif isinstance(ref_image2, str):
@@ -81,7 +80,7 @@ def get_warp(image1_path, image2_path, ref_image1=None, ref_image2=None, occlusi
 
     forward_flow_np = forward_flow.squeeze().permute(1, 2, 0).cpu().numpy()
     backward_flow_np = backward_flow.squeeze().permute(1, 2, 0).cpu().numpy()
-    # breakpoint()
+
     occlusion_mask = compute_occlusion_mask(forward_flow_np, backward_flow_np, threshold=1.5)
 
     if occlusion_mask_save_path is not None:

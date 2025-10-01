@@ -6,7 +6,7 @@ from einops import rearrange
 # Modified from tokenflow_utils.py
 def register_time(model, t):
     up_res_dict = {1: [1, 2], 2: [0, 1, 2], 3: [0, 1, 2]}
-    # breakpoint()
+
     for res in up_res_dict:
         for block in up_res_dict[res]:
             module = model.unet.up_blocks[res].attentions[block].transformer_blocks[0].attn1
@@ -15,7 +15,7 @@ def register_time(model, t):
             setattr(module, "idx", t)
 
 
-def register_spatial_attention_pnp(model, thresh=0.5):
+def register_spatial_attention_pnp(model, eta1=0.0, eta2=0.5):
     def ca_forward(self):
         def forward(
             hidden_states,
@@ -25,7 +25,7 @@ def register_spatial_attention_pnp(model, thresh=0.5):
             SparseCausalAttention_index: list = [-1, 'first']
         ) -> torch.FloatTensor:
             input_ndim = hidden_states.ndim
-            # breakpoint()
+
             if self.group_norm is not None:
                 hidden_states = self.group_norm(hidden_states.transpose(1, 2)).transpose(1, 2)
             if input_ndim == 4:
@@ -41,17 +41,15 @@ def register_spatial_attention_pnp(model, thresh=0.5):
             head_dim = dim // self.heads
             key = self.to_k(hidden_states)
             value = self.to_v(hidden_states)
-            # breakpoint()
-            # query、key、value shape: [64, h*w, C]
+
+
             # -------------------------------------AdaIN-Guided Attention-shift-----------------------------
-            if self.idx <= self.thresh * 50:
+            if self.idx >= self.eta1 and self.idx <= self.eta2 * 50:
                 # parameter
                 alpha = 0.65
-                # beta = (0.9 - 0.1) / (1000 - 400) * (self.idx - 400) + 0.1 # origin
-                beta = (0.9 - 0.1) / (0 - self.thresh * 50) * (self.idx - self.thresh * 50) + 0.1 # modify
-                # beta = 0.5
+                beta = (0.9 - 0.1) / (self.eta1 * 50 - self.eta2 * 50) * (self.idx - self.eta2 * 50) + 0.1
                 gamma = 3.0
-                # max_config:
+                #
                 query[2 * chunk_size: 3 * chunk_size] = alpha * query[: chunk_size] + (1 - alpha) * query[2 * chunk_size: 3 * chunk_size]  
                 key[2 * chunk_size: 3 * chunk_size] = beta * attention_adain(key[2 * chunk_size: 3 * chunk_size], key[chunk_size: 2 * chunk_size]) + (1 - beta) * key[chunk_size: 2 * chunk_size]
                 value[2 * chunk_size: 3 * chunk_size] = beta * attention_adain(value[2 * chunk_size: 3 * chunk_size], value[chunk_size: 2 * chunk_size]) + (1 - beta) * value[chunk_size: 2 * chunk_size]
@@ -102,14 +100,14 @@ def register_spatial_attention_pnp(model, thresh=0.5):
             return hidden_states
         return forward
 
-    # breakpoint()
+
     res_dict = {1: [1, 2], 2: [0, 1, 2], 3: [0, 1, 2]}
     # we are injecting attention in blocks 4 - 11 of the decoder, so not in the first block of the lowest resolution
     for res in res_dict:
         for block in res_dict[res]:
-            # breakpoint()
             module = model.unet.up_blocks[res].attentions[block].transformer_blocks[0].attn1
-            setattr(module, "thresh", thresh)
+            setattr(module, "eta1", eta1)
+            setattr(module, "eta2", eta2)
             model.unet.up_blocks[res].attentions[block].transformer_blocks[0].attn1.forward = ca_forward(module)
 
 

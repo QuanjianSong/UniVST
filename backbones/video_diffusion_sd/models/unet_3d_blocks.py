@@ -541,12 +541,11 @@ class CrossAttnUpBlockPseudo3D(nn.Module):
                     hidden_states,
                     encoder_hidden_states,
                 )[0]
-                # breakpoint()
-                # ipdb.set_trace()
+ 
                 if adapter_feature is not None:
                     hidden_states = hidden_states + adapter_feature
             else:
-                # breakpoint()
+
                 hidden_states = resnet(hidden_states, temb)
                 hidden_states = attn(hidden_states, encoder_hidden_states=encoder_hidden_states).sample
                 if adapter_feature is not None:

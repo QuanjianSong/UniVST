@@ -85,7 +85,7 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
         resnet_time_scale_shift: str = "default",
         **kwargs
     ):  
-        # breakpoint()
+
         super().__init__()
 
         self.sample_size = sample_size
@@ -311,8 +311,9 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
         class_labels: Optional[torch.Tensor] = None, # None
         attention_mask: Optional[torch.Tensor] = None, # None
         #
-        up_ft_indices=None,
-        ft_path=None,
+        ft_indices: List[int] = None,
+        ft_timesteps: List[int] = None,
+        ft_path: str = None,
         **args,
     ) -> Union[UNetPseudo3DConditionOutput, Tuple]:
         # By default samples have to be AT least a multiple of the overall upsampling factor.
@@ -425,10 +426,14 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
                     upsample_size=upsample_size,
                     **args,
                 )
-            if up_ft_indices is not None and ft_path is not None:
+            # -----------------------------------additional-----------------------------------
+            if ft_indices is not None and ft_timesteps is not None and ft_path is not None:
                 # save feature map
-                if timestep == 301 and i in up_ft_indices:
-                    torch.save(sample.detach(), os.path.join(ft_path, f'inversion_feature_map_{timestep}_step.pt'))
+                if i in ft_indices and timestep in ft_timesteps:
+                    save_path = os.path.join(ft_path, f'inversion_feature_map_{i}_block_{timestep}_step.pt')
+                    torch.save(sample[0].permute(1, 2, 3, 0).contiguous().detach(),
+                            save_path)
+                    print(f'save feature map at: {save_path}')
         
         # 6. post-process
         sample = self.conv_norm_out(sample)
@@ -448,7 +453,6 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
         config.pop("_class_name")
         config.pop("_diffusers_version")
 
-        # breakpoint()
 
         block_replacer = {
             "CrossAttnDownBlock2D": "CrossAttnDownBlockPseudo3D",
@@ -476,10 +480,10 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
         model = cls(**config)
 
         state_dict_path_condidates = glob.glob(os.path.join(model_path, "*.bin"))
-        # breakpoint()
+
         if state_dict_path_condidates:
             state_dict = torch.load(state_dict_path_condidates[0], map_location="cpu", weights_only=True)
-            # breakpoint()
+
             model.load_2d_state_dict(state_dict=state_dict)
             # new_dict = {key.replace("attn_temp", "attn_temporal"): value for key, value in state_dict.items()}
             # model.load_2d_state_dict(state_dict=new_dict)
@@ -488,7 +492,6 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
 
     def load_2d_state_dict(self, state_dict, **kwargs):
         state_dict_3d = self.state_dict()
-        # breakpoint()
 
         for k, v in state_dict.items():
             if k not in state_dict_3d:
