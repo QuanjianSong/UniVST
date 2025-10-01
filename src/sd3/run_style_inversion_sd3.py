@@ -92,10 +92,10 @@ def main(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    # parser.add_argument("--pretrained_model_path", type=str, default="/data/lxy/sqj/base_models/stable-diffusion-3-medium-diffusers")
-    parser.add_argument("--pretrained_model_path", type=str, default="/data/lxy/sqj/base_models/stable-diffusion-3.5-medium")
-    parser.add_argument("--style_path", type=str, default="examples/style/style1.png")
-    parser.add_argument("--output_path", type=str, default="output")
+    # parser.add_argument("--pretrained_model_path", type=str, default="stabilityai/stable-diffusion-3-medium-diffusers")
+    parser.add_argument("--pretrained_model_path", type=str, default="stabilityai/stable-diffusion-3.5-medium")
+    parser.add_argument("--style_path", type=str, default="examples/styles/00033.png")
+    parser.add_argument("--output_path", type=str, default="results/styles-inv")
     parser.add_argument("--weight_dtype", type=torch.dtype, default=torch.float16)
     #
     parser.add_argument("--num_frames", type=int, default=16)

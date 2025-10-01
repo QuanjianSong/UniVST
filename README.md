@@ -109,7 +109,9 @@ Then, you will find the stylization result in the `results/stylizations/sd/malla
 <details>
 <summary>Animatediff-v2</summary>
 
-You can run with a single click `sh scripts/start_animatediff.sh` to get the stylized results. Alternatively, you can also follow the steps below for customization.
+First, you need to download the [motion module](https://huggingface.co/guoyww/animatediff/blob/main/mm_sd_v15_v2.ckpt) to the dir `ckpts`.
+
+Then, you can run with a single click `sh scripts/start_animatediff.sh` to get the stylized results. Alternatively, you can also follow the steps below for customization.
 
 #### • 1.Perform inversion for original video.
 ```

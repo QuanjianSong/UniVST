@@ -106,11 +106,11 @@ def main(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pretrained_model_path", type=str, default="/data/lxy/sqj/base_models/stable-diffusion-3-medium-diffusers")
-    # parser.add_argument("--pretrained_model_path", type=str, default="/data/lxy/sqj/base_models/stable-diffusion-3.5-medium")
-    parser.add_argument("--content_inv_path", type=str, default="outputs/content-inv/sd3-rf-solver/davis2016/blackswan/inversion")
-    parser.add_argument("--style_inv_path", type=str, default="outputs/style-inv/sd3-rf-solver/laion/00041/inversion")
-    parser.add_argument("--mask_path", type=str, default="/data/lxy/sqj/datasets/my_davis2016/mask/blackswan")
+    parser.add_argument("--pretrained_model_path", type=str, default="stabilityai/stable-diffusion-3-medium-diffusers")
+    # parser.add_argument("--pretrained_model_path", type=str, default="stabilityai/stable-diffusion-3.5-medium")
+    parser.add_argument("--content_inv_path", type=str, default="results/contents-inv/sd3/mallard-fly/inversion/content-inv/sd3-rf-solver/davis2016/blackswan/inversion")
+    parser.add_argument("--style_inv_path", type=str, default="results/styles-inv/sd3/00033/inversion")
+    parser.add_argument("--mask_path", type=str, default="results/masks/sd3/mallard-fly")
     parser.add_argument("--output_path", type=str, default="output/")
     parser.add_argument("--weight_dtype", type=torch.dtype, default=torch.float16)
     #

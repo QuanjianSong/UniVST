@@ -33,7 +33,7 @@ def main(
     tokenizer = CLIPTokenizer.from_pretrained(pretrained_model_path, subfolder="tokenizer")
     text_encoder = CLIPTextModel.from_pretrained(pretrained_model_path, subfolder="text_encoder").requires_grad_(False)
     # use 3d vae for more stable results
-    vae = AutoencoderKLTemporalDecoder.from_pretrained('/data/lxy/sqj/base_models/stable-video-diffusion-img2vid', subfolder="vae").requires_grad_(False)
+    vae = AutoencoderKLTemporalDecoder.from_pretrained('stabilityai/stable-video-diffusion-img2vid', subfolder="vae").requires_grad_(False)
     unet = UNetPseudo3DConditionModel.from_2d_model(os.path.join(pretrained_model_path, "unet")).requires_grad_(False)
     # set device
     text_encoder = text_encoder.to(weight_dtype).cuda()
@@ -71,12 +71,12 @@ def main(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pretrained_model_path", type=str, default="/data/lxy/sqj/base_models/stable-diffusion-1.5")
-    # parser.add_argument("--pretrained_model_path", type=str, default="/data/lxy/sqj/base_models/stable-diffusion-2-1-base")
-    parser.add_argument("--content_inv_path", type=str, default="output/content/libby/inversion")
-    parser.add_argument("--style_inv_path", type=str, default="output/style/style1/inversion")
-    parser.add_argument("--mask_path", type=str, default="output/mask/libby")
-    parser.add_argument("--output_path", type=str, default="results/stylized")
+    parser.add_argument("--pretrained_model_path", type=str, default="stable-diffusion-v1-5/stable-diffusion-v1-5")
+    # parser.add_argument("--pretrained_model_path", type=str, default="stabilityai/stable-diffusion-2-1-base")
+    parser.add_argument("--content_inv_path", type=str, default="results/contents-inv/sd/mallard-fly/inversion")
+    parser.add_argument("--style_inv_path", type=str, default="results/styles-inv/sd/00033/inversion")
+    parser.add_argument("--mask_path", type=str, default="results/masks/sd/mallard-fly")
+    parser.add_argument("--output_path", type=str, default="results/stylizations")
     parser.add_argument("--weight_dtype", type=torch.dtype, default=torch.float16)
     #
     parser.add_argument("--time_steps", type=int, default=50)

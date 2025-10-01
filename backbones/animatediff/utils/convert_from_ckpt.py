@@ -664,7 +664,7 @@ def convert_ldm_vae_checkpoint(checkpoint, config):
 
 
 def convert_ldm_clip_checkpoint(checkpoint):
-    text_model = CLIPTextModel.from_pretrained("/data/lxy/sqj/base_models/models--openai--clip-vit-large-patch14")
+    text_model = CLIPTextModel.from_pretrained("openai/clip-vit-large-patch14")
     keys = list(checkpoint.keys())
 
     text_model_dict = {}

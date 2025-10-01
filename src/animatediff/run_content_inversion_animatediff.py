@@ -43,7 +43,7 @@ def main(
     tokenizer = CLIPTokenizer.from_pretrained(pretrained_model_path, subfolder="tokenizer")
     text_encoder = CLIPTextModel.from_pretrained(pretrained_model_path, subfolder="text_encoder").requires_grad_(False)
     # use 3d vae for more stable results
-    vae = AutoencoderKLTemporalDecoder.from_pretrained('/data/lxy/sqj/base_models/stable-video-diffusion-img2vid', subfolder="vae").requires_grad_(False)
+    vae = AutoencoderKLTemporalDecoder.from_pretrained('stabilityai/stable-video-diffusion-img2vid', subfolder="vae").requires_grad_(False)
     inference_config = OmegaConf.load("backbones/animatediff/animatediff-v2.yaml")
     unet = UNet3DConditionModel.from_pretrained_2d(args.pretrained_model_path, subfolder="unet", unet_additional_kwargs=OmegaConf.to_container(inference_config.unet_additional_kwargs)).requires_grad_(False)
     # set device
@@ -82,10 +82,10 @@ def main(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pretrained_model_path", type=str, default="/data/lxy/sqj/base_models/stable-diffusion-1.5")
-    parser.add_argument("--motion_module_path", type=str, default="ckpt/mm_sd_v15_v2.ckpt")
-    parser.add_argument("--content_path", type=str, default="examples/content/libby")
-    parser.add_argument("--output_path", type=str, default="results/content-inv")
+    parser.add_argument("--pretrained_model_path", type=str, default="stable-diffusion-v1-5/stable-diffusion-v1-5")
+    parser.add_argument("--motion_module_path", type=str, default="ckpts/mm_sd_v15_v2.ckpt")
+    parser.add_argument("--content_path", type=str, default="examples/contents/mallard-fly")
+    parser.add_argument("--output_path", type=str, default="results/contents-inv")
     parser.add_argument("--weight_dtype", type=torch.dtype, default=torch.float16)
     #
     parser.add_argument("--num_frames", type=int, default=16)

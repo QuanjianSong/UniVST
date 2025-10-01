@@ -99,10 +99,10 @@ def main(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    # parser.add_argument("--pretrained_model_path", type=str, default="/data/lxy/sqj/base_models/stable-diffusion-3-medium-diffusers")
-    parser.add_argument("--pretrained_model_path", type=str, default="/data/lxy/sqj/base_models/stable-diffusion-3.5-medium")
-    parser.add_argument("--content_path", type=str, default="examples/content/libby")
-    parser.add_argument("--output_path", type=str, default="results/content-inv")
+    # parser.add_argument("--pretrained_model_path", type=str, default="stabilityai/stable-diffusion-3-medium-diffusers")
+    parser.add_argument("--pretrained_model_path", type=str, default="stabilityai/stable-diffusion-3.5-medium")
+    parser.add_argument("--content_path", type=str, default="examples/contents/mallard-fly")
+    parser.add_argument("--output_path", type=str, default="results/contents-inv")
     parser.add_argument("--weight_dtype", type=torch.dtype, default=torch.bfloat16)
     #
     parser.add_argument("--num_frames", type=int, default=16)
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     parser.add_argument("--time_steps", type=int, default=50)
     #
     parser.add_argument("--ft_indices", type=int, default=20)
-    parser.add_argument("--ft_timesteps", type=int, default=10)
+    parser.add_argument("--ft_timesteps", type=int, default=5)
     parser.add_argument('--is_rf_solver', action='store_true', help='use rf-solver')
     parser.add_argument("--seed", type=int, default=33)
     args = parser.parse_args()

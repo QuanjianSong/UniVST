@@ -146,10 +146,10 @@ if __name__ == '__main__':
     parser.add_argument("--sample_ratio", type=float, default=0.3, help="The sample ratio of mask propagation.")
     parser.add_argument("--num_frames", type=int, default=16, help="The total nums of mask.")
     #
-    parser.add_argument("--backbone", type=str, default='animatediff')
-    parser.add_argument("--feature_path", type=str, default='/data/lxy/sqj/code/UniVST/output-animatediff/content-inv/animatediff/mallard-fly/features/inversion_feature_map_2_block_51_step.pt', help="The path of inversion feature map.")
-    parser.add_argument("--mask_path", type=str, default='examples/mask/mallard-fly.png', help="The path of first frame.")
-    parser.add_argument("--output_path", type=str, default='output-sd-1-5', help="The path of output.")
+    parser.add_argument("--mask_path", type=str, default='examples/masks/mallard-fly.png', help="The path of first frame.")
+    parser.add_argument("--backbone", type=str, default=None)
+    parser.add_argument("--feature_path", type=str, default=None, help="The path of inversion feature map.")
+    parser.add_argument("--output_path", type=str, default=None, help="The path of output.")
     args = parser.parse_args()
     # -------------------------------------------------------------------------------------------------------------
     video_mask_propogation(args)
