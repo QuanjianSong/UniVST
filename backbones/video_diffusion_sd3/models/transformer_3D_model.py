@@ -76,12 +76,11 @@ class CustomSD3Transformer2DModel(SD3Transformer2DModel):
             # -----------------------------------additional-----------------------------------
             if ft_indices is not None and ft_timesteps and ft_path is not None:
                 # save feature map
-                if index_block in ft_indices and idx == ft_timesteps:
+                if index_block in ft_indices and idx in ft_timesteps:
                     save_path = os.path.join(ft_path, f'inversion_feature_map_{index_block}_block_{idx}_step.pt')
                     print(f'save feature map at: {save_path}')
                     torch.save(hidden_states.view(hidden_states.shape[0], height//2, width//2, -1).detach(),
-                               os.path.join(ft_path, save_path))
-
+                               save_path)
 
             # controlnet residual
             if block_controlnet_hidden_states is not None and block.context_pre_only is False:

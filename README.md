@@ -93,7 +93,7 @@ CUDA_VISIBLE_DEVICES=1 python src/mask_propagation.py \
                         --output_path 'results/masks'
 ```
 Then, you will find the mask propagation result in the `results/masks/sd/mallard-fly`.
-#### • 4.Perform video style transfer. [Optional, you can also omit the mask_path to complete the overall style transfer.]
+#### • 4.Perform localized video style transfer. [Optional, you can also omit the mask_path to complete the overall style transfer.]
 ```
 CUDA_VISIBLE_DEVICES=1 python src/sd/run_video_style_transfer_sd.py \
                         --content_inv_path results/contents-inv/sd/mallard-fly/inversion \
@@ -135,7 +135,7 @@ CUDA_VISIBLE_DEVICES=1 python src/mask_propagation.py \
                         --output_path 'results/masks'
 ```
 Then, you will find the mask propagation result in the `results/masks/animatediff/mallard-fly`.
-#### • 4.Perform video style transfer. [Optional, you can also omit the mask_path to complete the overall style transfer.]
+#### • 4.Perform localized video style transfer. [Optional, you can also omit the mask_path to complete the overall style transfer.]
 ```
 CUDA_VISIBLE_DEVICES=1 python src/animatediff/run_video_style_transfer_animatediff.py \
                         --content_inv_path results/contents-inv/animatediff/mallard-fly/inversion \
@@ -180,7 +180,7 @@ CUDA_VISIBLE_DEVICES=1 python src/mask_propagation.py \
                         --output_path 'results/masks'
 ```
 Then, you will find the mask propagation result in the `results/masks/sd3/mallard-fly`.
-#### • 4.Perform video style transfer. [Optional, you can also omit the mask_path to complete the overall style transfer.]
+#### • 4.Perform localized video style transfer. [Optional, you can also omit the mask_path to complete the overall style transfer.]
 ```
 CUDA_VISIBLE_DEVICES=1 python src/animatediff/run_video_style_transfer_animatediff.py \
                         --content_inv_path results/content-inv/animatediff/mallard-fly/inversion \
