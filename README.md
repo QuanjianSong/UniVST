@@ -72,36 +72,36 @@ You can run with a single click `sh scripts/start_sd.sh` to get the stylized res
 #### • 1.Perform inversion for original video.
 ```
 CUDA_VISIBLE_DEVICES=1 python src/sd/run_content_inversion_sd.py \
-                        --content_path examples/content/mallard-fly \
-                        --output_path results/content-inv \
+                        --content_path examples/contents/mallard-fly \
+                        --output_path results/contents-inv \
                         --is_opt
 ```
-Then, you will find the content inversion result in the `results/content-inv/sd/mallard-fly`.
+Then, you will find the content inversion result in the `results/contents-inv/sd/mallard-fly`.
 #### • 2.Perform inversion for style image.
 ```
 CUDA_VISIBLE_DEVICES=1 python src/sd/run_style_inversion_sd.py \
-                        --style_path examples/style/00033.png \
-                        --output_path results/style-inv
+                        --style_path examples/styles/00033.png \
+                        --output_path results/styles-inv
 ```
-Then, you will find the style inversion result in the `results/style-inv/sd/00033`.
+Then, you will find the style inversion result in the `results/styles-inv/sd/00033`.
 #### • 3.Perform mask propagation. [Optional, you can also customize the masks and skip this step.]
 ```
 CUDA_VISIBLE_DEVICES=1 python src/mask_propagation.py \
-                        --feature_path results/content-inv/sd/mallard-fly/features/inversion_feature_map_2_block_301_step.pt \
+                        --feature_path results/contents-inv/sd/mallard-fly/features/inversion_feature_map_2_block_301_step.pt \
                         --backbone 'sd' \
-                        --mask_path 'examples/mask/mallard-fly.png' \
+                        --mask_path 'examples/masks/mallard-fly.png' \
                         --output_path 'results/masks'
 ```
 Then, you will find the mask propagation result in the `results/masks/sd/mallard-fly`.
 #### • 4.Perform video style transfer. [Optional, you can also omit the mask_path to complete the overall style transfer.]
 ```
 CUDA_VISIBLE_DEVICES=1 python src/sd/run_video_style_transfer_sd.py \
-                        --content_inv_path results/content-inv/sd/mallard-fly/inversion \
-                        --style_inv_path results/style-inv/sd/00033/inversion \
+                        --content_inv_path results/contents-inv/sd/mallard-fly/inversion \
+                        --style_inv_path results/styles-inv/sd/00033/inversion \
                         --mask_path results/masks/sd/mallard-fly \
-                        --output_path results/stylization
+                        --output_path results/stylizations
 ```
-Then, you will find the stylization result in the `results/stylization/sd/mallard-fly_00033`.
+Then, you will find the stylization result in the `results/stylizations/sd/mallard-fly_00033`.
 
 </details> 
 
@@ -114,36 +114,36 @@ You can run with a single click `sh scripts/start_animatediff.sh` to get the sty
 #### • 1.Perform inversion for original video.
 ```
 CUDA_VISIBLE_DEVICES=1 python src/animatediff/run_content_inversion_animatediff.py \
-                        --content_path examples/content/mallard-fly \
-                        --output_path results/content-inv \
+                        --content_path examples/contents/mallard-fly \
+                        --output_path results/contents-inv \
                         --is_opt
 ```
-Then, you will find the content inversion result in the `results/content-inv/animatediff/mallard-fly`.
+Then, you will find the content inversion result in the `results/contents-inv/animatediff/mallard-fly`.
 #### • 2.Perform inversion for style image.
 ```
 CUDA_VISIBLE_DEVICES=1 python src/animatediff/run_style_inversion_animatediff.py \
-                        --style_path examples/style/00033.png \
-                        --output_path results/style-inv \
+                        --style_path examples/styles/00033.png \
+                        --output_path results/styles-inv \
 ```
-Then, you will find the style inversion result in the `results/style-inv/animatediff/00033`.
+Then, you will find the style inversion result in the `results/styles-inv/animatediff/00033`.
 #### • 3.Perform mask propagation. [Optional, you can also customize the masks and skip this step.]
 ```
 CUDA_VISIBLE_DEVICES=1 python src/mask_propagation.py \
-                        --feature_path results/content-inv/animatediff/mallard-fly/features/inversion_feature_map_2_block_301_step.pt \
+                        --feature_path results/contents-inv/animatediff/mallard-fly/features/inversion_feature_map_2_block_301_step.pt \
                         --backbone 'animatediff' \
-                        --mask_path 'examples/mask/mallard-fly.png' \
+                        --mask_path 'examples/masks/mallard-fly.png' \
                         --output_path 'results/masks'
 ```
 Then, you will find the mask propagation result in the `results/masks/animatediff/mallard-fly`.
 #### • 4.Perform video style transfer. [Optional, you can also omit the mask_path to complete the overall style transfer.]
 ```
 CUDA_VISIBLE_DEVICES=1 python src/animatediff/run_video_style_transfer_animatediff.py \
-                        --content_inv_path results/content-inv/animatediff/mallard-fly/inversion \
-                        --style_inv_path results/style-inv/animatediff/00033/inversion \
+                        --content_inv_path results/contents-inv/animatediff/mallard-fly/inversion \
+                        --style_inv_path results/styles-inv/animatediff/00033/inversion \
                         --mask_path results/masks/animatediff/mallard-fly \
-                        --output_path results/stylization
+                        --output_path results/stylizations
 ```
-Then, you will find the stylization result in the `results/stylization/animatediff/mallard-fly_00033`.
+Then, you will find the stylization result in the `results/stylizations/animatediff/mallard-fly_00033`.
 
 </details> 
 
