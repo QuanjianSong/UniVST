@@ -54,7 +54,7 @@ We propose UniVST, a unified framework for training-free localized video style t
 ```
 git clone https://github.com/QuanjianSong/UniVST.git
 # Installation with the requirement.txt
-conda create -n UniVST python=3.9
+conda create -n UniVST python=3.10
 conda activate UniVST
 pip install -r requirements.txt
 # Or installation with environment.yaml
