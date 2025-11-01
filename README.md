@@ -39,6 +39,7 @@ UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Of
 
 ## 🎉 News
 <pre>
+• <strong>2025.10</strong>: 🔥 UniVST has been accepted to TPAMI.
 • <strong>2025.10</strong>: 🔥 UniVST now supports five backbones, including advanced rectified-flow models.
 • <strong>2025.09</strong>: 🔥 The code has been reorganized and several bugs have been fixed.
 • <strong>2025.05</strong>: 🔥 The <a href="https://quanjiansong.github.io/projects/UniVST">project page</a> of UniVST is now available.
