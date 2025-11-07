@@ -1,6 +1,8 @@
 <div align="center">
 <h1>
-UniVST: A Unified Framework for Training-free Localized Video Style Transfer [Official Code of PyTorch]
+UniVST: A Unified Framework for Training-free
+<br>
+Localized Video Style Transfer
 </h1>
 
 <div>
