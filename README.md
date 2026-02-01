@@ -41,6 +41,8 @@ Localized Video Style Transfer
 </p>
 </div>
 
+
+
 ## 🎉 News
 <pre>
 • <strong>2025.10</strong>: 🔥 UniVST has been accepted by TPAMI.
@@ -51,9 +53,13 @@ Localized Video Style Transfer
 • <strong>2024.10</strong>: 🔥 The paper of UniVST has been submitted to <a href="https://arxiv.org/abs/2410.20084">arXiv</a>.
 </pre>
 
+
+
 ## 🎬 Overview
 We propose UniVST, a unified framework for training-free localized video style transfer based on diffusion models. UniVST first applies DDIM inversion to the original video and style image to obtain their initial noise and integrates Point-Matching Mask Propagation to generate masks for the object regions. It then performs AdaIN-Guided Localized Video Stylization with a three-branch architecture for information interaction. Moreover, Sliding-Window Consistent Smoothing is incorporated into the denoising process, enhancing the temporal consistency in the latent space. The overall framework is illustrated as follows:
 ![Overall Framework](assets/overall_framework.png)
+
+
 
 ## 🔧 Environment
 ```
@@ -65,6 +71,8 @@ pip install -r requirements.txt
 # Or installation with environment.yaml
 conda env create -f environment.yaml
 ```
+
+
 
 ## 🚀 Start
 We provide five different backbone options: SD-v1.5, SD-v2.1, Animatediff-v2, SD-v3.0, and SD-v3.5. You can freely choose the backbone for your video stylization tasks.
@@ -109,6 +117,7 @@ CUDA_VISIBLE_DEVICES=1 python src/sd/run_video_style_transfer_sd.py \
 Then, you will find the stylization result in the `results/stylizations/sd/mallard-fly_00033`.
 
 </details> 
+
 
 
 <details>
@@ -156,7 +165,6 @@ Then, you will find the stylization result in the `results/stylizations/animated
 
 
 
-
 <details>
 <summary>SD-v3.0/SD-v3.5</summary>
 
@@ -201,16 +209,14 @@ Then, you will find the stylization result in the `results/stylization/sd3/malla
 
 
 
-
-
-
 ## 🎓 Bibtex
 🤗 If you find this code helpful for your research, please cite:
 ```
-@article{song2024univst,
-  title={UniVST: A Unified Framework for Training-free Localized Video Style Transfer},
+@article{song2025univst,
+  title={Univst: A unified framework for training-free localized video style transfer},
   author={Song, Quanjian and Lin, Mingbao and Zhan, Wengyi and Yan, Shuicheng and Cao, Liujuan and Ji, Rongrong},
-  journal={arXiv preprint arXiv:2410.20084},
-  year={2024}
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year={2025},
+  publisher={IEEE}
 }
 ```
